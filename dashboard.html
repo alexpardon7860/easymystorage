@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Premium UserFlow</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .app-view { display: none; animation: fadeIn 0.3s ease; }
+    .app-view.active-view { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+<div id="toast-container" aria-live="polite"></div>
+
+<div class="dashboard-layout">
+  
+  <!-- ── Top Navbar ── -->
+  <nav class="top-nav">
+    <div class="brand" style="margin:0">
+      <div class="brand-icon" style="color:#11131a">✦</div>
+      <span class="brand-name">EasyMyStorage</span>
+    </div>
+
+    <div class="nav-pill-menu" id="main-nav-menu">
+      <button class="nav-pill" data-target="view-overview">Overview</button>
+      <button class="nav-pill active" data-target="view-users">Users</button>
+      <button class="nav-pill" data-target="view-settings">Settings</button>
+      <button class="nav-pill" data-target="view-security">Security</button>
+    </div>
+
+    <div class="nav-profile">
+      <button class="btn btn-primary" id="logout-btn" style="padding: 8px 16px; font-size: 0.8rem; background: transparent; color: var(--clr-muted); border: 1px solid var(--clr-border);">Logout</button>
+      <div class="avatar-circle" id="nav-avatar" style="width:38px;height:38px;border-radius:50%;overflow:hidden;border:2px solid var(--clr-primary);background:var(--clr-surface-2);flex-shrink:0;"></div>
+    </div>
+  </nav>
+
+  <!-- ── Header ── -->
+  <header class="dash-header-area">
+    <h1 class="dash-title" id="page-title">User Management</h1>
+    <button class="btn btn-primary" id="create-user-btn" onclick="openCreateModal()">Create new user</button>
+  </header>
+
+  <!-- ==========================================
+       VIEW: USERS (Default)
+       ========================================== -->
+  <div id="view-users" class="app-view active-view">
+    <!-- ── Stats Overview ── -->
+    <section class="stats-container" style="margin-bottom: 24px;">
+      <div class="stats-group">
+        <div>
+          <div class="stat-label">Total Users</div>
+          <div class="stat-value" id="stat-total">0</div>
+        </div>
+        <div>
+          <div class="stat-label">System Admins</div>
+          <div class="stat-value" id="stat-admins">0</div>
+        </div>
+        <div>
+          <div class="stat-label">Google Auth</div>
+          <div class="stat-value" id="stat-google">0</div>
+        </div>
+      </div>
+      <div class="stat-box-single">
+        <div class="stat-label">Manual Auth</div>
+        <div class="stat-value" style="color: var(--clr-primary);" id="stat-manual">0</div>
+      </div>
+    </section>
+
+    <!-- ── Filters Bar ── -->
+    <section class="filters-bar" style="margin-bottom: 24px;">
+      <div class="filter-left">
+        <span class="filter-label">Active filters</span>
+        <div class="filter-dropdowns">
+          <button class="filter-btn-dark active" data-filter="all">All Users</button>
+          <button class="filter-btn-dark" data-filter="admin">Admins</button>
+          <button class="filter-btn-dark" data-filter="user">Standard Users</button>
+          <button class="filter-btn-dark" data-filter="google">Google Auth</button>
+        </div>
+      </div>
+      <div style="display:flex; gap: 8px;">
+        <input type="text" id="search-input" placeholder="Search users..." class="form-control" style="width: 250px; padding: 8px 16px; border-radius: 50px;" />
+      </div>
+    </section>
+
+    <!-- ── Split Workspace ── -->
+    <section class="split-workspace">
+      <!-- Left: List Pane -->
+      <aside class="list-pane">
+        <div class="list-header">
+          <span class="list-title">Directory</span>
+          <div class="list-filters">
+            <button class="lf-btn active" id="sub-filter-all">All</button>
+            <button class="lf-btn" id="sub-filter-google">Google</button>
+            <button class="lf-btn" id="sub-filter-manual">Manual</button>
+          </div>
+        </div>
+        <div class="users-list" id="users-list-container">
+          <div style="padding: 20px; text-align: center; color: #94a3b8; font-size: 0.85rem;">Loading users...</div>
+        </div>
+      </aside>
+
+      <!-- Right: Details Pane -->
+      <main class="details-pane" id="details-pane">
+        <div class="empty-details">
+          <div style="font-size: 3rem; margin-bottom: 16px; opacity: 0.5;">✦</div>
+          <p>Select a user from the directory to view details</p>
+        </div>
+      </main>
+    </section>
+  </div>
+
+  <!-- ==========================================
+       VIEW: OVERVIEW
+       ========================================== -->
+  <div id="view-overview" class="app-view">
+    <div class="empty-details" style="height: 60vh; background: var(--clr-surface); border-radius: var(--r-lg); border: 1px solid var(--clr-border);">
+       <div style="font-size: 4rem; margin-bottom: 24px; color: var(--clr-primary);">📊</div>
+       <h2 style="color: #fff; margin-bottom: 12px; font-weight: 600;">System is Healthy</h2>
+       <p style="max-width: 400px; text-align: center; color: var(--clr-muted);">Your User Management System is currently online. The database connection is stable, and all APIs are operating normally.</p>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       VIEW: SETTINGS
+       ========================================== -->
+  <div id="view-settings" class="app-view">
+    <div style="background: var(--clr-surface); border-radius: var(--r-lg); border: 1px solid var(--clr-border); padding: 40px; max-width: 600px;">
+       <h2 style="color: #fff; margin-bottom: 32px; font-weight: 600;">My Profile Settings</h2>
+       
+       <!-- Avatar Upload Section -->
+       <div style="display: flex; align-items: center; gap: 24px; margin-bottom: 32px;">
+         <div class="settings-avatar" id="settings-avatar-preview" style="width: 80px; height: 80px; border-radius: 50%; background: var(--clr-surface-2); display: grid; place-items: center; font-size: 1.5rem; overflow: hidden; border: 2px solid var(--clr-border); color: #fff;">
+           ?
+         </div>
+         <div>
+           <div style="display: flex; gap: 8px;">
+             <input type="file" id="avatar-upload" accept="image/png, image/jpeg, image/webp" style="display: none;" />
+             <button class="btn btn-primary" onclick="document.getElementById('avatar-upload').click()" style="padding: 8px 16px; font-size: 0.85rem; background: var(--clr-surface-2); border: 1px solid var(--clr-border); color: var(--clr-text);">Upload File</button>
+             <button class="btn btn-primary" id="btn-random-avatar" style="padding: 8px 16px; font-size: 0.85rem; background: var(--clr-primary); color: #000; border: none; font-weight: 600;">Generate Random</button>
+           </div>
+           <p style="color: var(--clr-muted); font-size: 0.75rem; margin-top: 8px;">Upload a custom image or generate a random one.</p>
+         </div>
+       </div>
+       
+       <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input class="form-control" type="text" id="setting-name" disabled />
+       </div>
+       
+       <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input class="form-control" type="email" id="setting-email" disabled />
+       </div>
+
+       <div class="form-group">
+          <label class="form-label">Account Role</label>
+          <input class="form-control" type="text" id="setting-role" disabled style="background: rgba(255,255,255,0.01); color: var(--clr-primary); font-weight: 600;" />
+       </div>
+
+       <hr style="border: 0; height: 1px; background: var(--clr-border); margin: 32px 0;">
+
+       <h3 style="color: #fff; margin-bottom: 16px; font-size: 1rem;">Preferences</h3>
+       <label style="display: flex; align-items: center; gap: 12px; color: var(--clr-muted); font-size: 0.9rem; cursor: pointer;">
+         <input type="checkbox" checked disabled style="accent-color: var(--clr-primary); width: 16px; height: 16px;">
+         Enable Dark Theme (Default)
+       </label>
+       <label style="display: flex; align-items: center; gap: 12px; color: var(--clr-muted); font-size: 0.9rem; cursor: pointer; margin-top: 12px;">
+         <input type="checkbox" checked disabled style="accent-color: var(--clr-primary); width: 16px; height: 16px;">
+         Receive email notifications for new user registrations
+       </label>
+
+       <button class="btn btn-primary" style="margin-top: 32px; opacity: 0.5; cursor: not-allowed; width: 100%;">Feature Coming Soon</button>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       VIEW: SECURITY
+       ========================================== -->
+  <div id="view-security" class="app-view">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+      
+      <!-- Security Status -->
+      <div style="background: var(--clr-surface); border-radius: var(--r-lg); border: 1px solid var(--clr-border); padding: 40px;">
+         <h2 style="color: #fff; margin-bottom: 24px; font-weight: 600;">Security Status</h2>
+         <div style="padding: 16px; background: rgba(178,255,36,0.1); border: 1px solid rgba(178,255,36,0.2); border-radius: var(--r-md); margin-bottom: 32px; display: flex; align-items: center; gap: 12px;">
+             <span style="font-size: 1.5rem;">🛡️</span>
+             <div>
+               <div style="color: var(--clr-primary); font-weight: 600;">Account is Secure</div>
+               <div style="color: var(--clr-muted); font-size: 0.8rem; margin-top: 2px;">No unusual activity detected.</div>
+             </div>
+         </div>
+         
+         <h3 style="color: #fff; margin-bottom: 16px; font-size: 1rem;">Active Sessions</h3>
+         <p style="color: var(--clr-muted); font-size: 0.85rem; margin-bottom: 16px;">You are currently logged in from this device.</p>
+         
+         <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: var(--clr-surface-2); border-radius: var(--r-md); border: 1px solid var(--clr-border);">
+             <div style="display: flex; align-items: center; gap: 12px;">
+               <span style="font-size: 1.5rem; opacity: 0.8;">💻</span>
+               <div>
+                  <div style="color: #fff; font-weight: 500; font-size: 0.95rem;">Current Browser</div>
+                  <div style="color: var(--clr-muted); font-size: 0.8rem; margin-top: 2px;" id="sec-ip">Local Connection</div>
+               </div>
+             </div>
+             <div style="color: var(--clr-primary); font-size: 0.75rem; font-weight: 700; background: rgba(178,255,36,0.1); padding: 4px 12px; border-radius: 50px;">ACTIVE NOW</div>
+         </div>
+      </div>
+
+      <!-- Change Password -->
+      <div style="background: var(--clr-surface); border-radius: var(--r-lg); border: 1px solid var(--clr-border); padding: 40px;">
+         <h2 style="color: #fff; margin-bottom: 24px; font-weight: 600;">Change Password</h2>
+         
+         <div class="form-group">
+            <label class="form-label">Current Password</label>
+            <input class="form-control" type="password" placeholder="••••••••" disabled />
+         </div>
+         <div class="form-group">
+            <label class="form-label">New Password</label>
+            <input class="form-control" type="password" placeholder="••••••••" disabled />
+         </div>
+         <div class="form-group">
+            <label class="form-label">Confirm New Password</label>
+            <input class="form-control" type="password" placeholder="••••••••" disabled />
+         </div>
+
+         <button class="btn btn-primary" style="margin-top: 16px; opacity: 0.5; cursor: not-allowed; width: 100%;">Feature Coming Soon</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ==========================================
+     MODAL: CREATE USER
+     ========================================== -->
+<div id="modal-create-user" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 style="font-size: 1.2rem; margin: 0; color: #fff;">Create New User</h2>
+      <button class="modal-close" onclick="closeCreateModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="dash-create-form">
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="c-name" class="form-control" required />
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="c-email" class="form-control" required />
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label class="form-label">Password</label>
+          <input type="password" id="c-password" class="form-control" required />
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label class="form-label">Confirm Password</label>
+          <input type="password" id="c-confirm" class="form-control" required />
+        </div>
+        <!-- Account Role is omitted as new registrations default to standard users -->
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 12px;" id="c-submit">Create User</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="js/dashboard.js"></script>
+</body>
+</html>

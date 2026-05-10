@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EasyMyStorage — Secure Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+<div id="toast-container" aria-live="polite"></div>
+
+<div class="ems-layout">
+
+  <!-- ── LEFT PANEL: Branding ── -->
+  <aside class="ems-left">
+    <div class="ems-left-inner">
+
+      <!-- Logo -->
+      <div class="ems-logo">
+        <div class="ems-logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+        </div>
+        <span class="ems-logo-text">Easy<strong>MyStorage</strong></span>
+      </div>
+
+      <!-- Illustration: 3D Supply Chain Scene -->
+      <div class="ems-illustration">
+        <div class="sc3d-scene">
+
+          <!-- Barcode / Scan -->
+          <div class="sc3d-element barcode float-mid" style="animation-delay:0.8s">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <rect x="2" y="2" width="44" height="44" rx="6" fill="#1a3255" stroke="rgba(255,107,44,0.4)" stroke-width="1"/>
+              <!-- Bars -->
+              <rect x="8" y="10" width="2" height="20" fill="rgba(255,107,44,0.8)"/>
+              <rect x="12" y="10" width="4" height="20" fill="rgba(255,107,44,0.5)"/>
+              <rect x="18" y="10" width="2" height="20" fill="rgba(255,107,44,0.8)"/>
+              <rect x="22" y="10" width="3" height="20" fill="rgba(255,107,44,0.4)"/>
+              <rect x="27" y="10" width="2" height="20" fill="rgba(255,107,44,0.8)"/>
+              <rect x="31" y="10" width="4" height="20" fill="rgba(255,107,44,0.5)"/>
+              <rect x="37" y="10" width="2" height="20" fill="rgba(255,107,44,0.8)"/>
+              <!-- Scan line -->
+              <line x1="6" y1="20" x2="42" y2="20" stroke="rgba(72,202,228,0.8)" stroke-width="1.5" stroke-dasharray="2 1"/>
+              <!-- Number -->
+              <text x="24" y="40" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="6" font-family="monospace">EMS-7842</text>
+            </svg>
+            <span class="sc3d-label">Scan</span>
+          </div>
+
+          <!-- GPS / Location Pin -->
+          <div class="sc3d-element gps float-slow" style="animation-delay:1.5s">
+            <svg width="44" height="54" viewBox="0 0 44 54" fill="none">
+              <circle cx="22" cy="20" r="18" fill="#1a3255" stroke="rgba(255,107,44,0.6)" stroke-width="1.5"/>
+              <circle cx="22" cy="20" r="10" fill="rgba(255,107,44,0.2)" stroke="rgba(255,107,44,0.8)" stroke-width="1.5"/>
+              <circle cx="22" cy="20" r="4" fill="rgba(255,107,44,0.9)"/>
+              <!-- Pin tail -->
+              <path d="M22 38 L22 54" stroke="rgba(255,107,44,0.5)" stroke-width="2" stroke-linecap="round"/>
+              <!-- Signal rings -->
+              <circle cx="22" cy="20" r="14" fill="none" stroke="rgba(255,107,44,0.15)" stroke-width="1" stroke-dasharray="3 4"/>
+            </svg>
+            <span class="sc3d-label">Track</span>
+          </div>
+
+          <!-- Package box (isometric) -->
+          <div class="sc3d-element package float-fast">
+            <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
+              <!-- Top face -->
+              <polygon points="27,4 50,16 27,28 4,16" fill="#1a3255" stroke="rgba(255,107,44,0.6)" stroke-width="1.2"/>
+              <!-- Right face -->
+              <polygon points="27,28 50,16 50,38 27,50" fill="#112240" stroke="rgba(255,107,44,0.4)" stroke-width="1.2"/>
+              <!-- Left face -->
+              <polygon points="27,28 4,16 4,38 27,50" fill="rgba(26,50,85,0.7)" stroke="rgba(255,107,44,0.3)" stroke-width="1.2"/>
+              <!-- Tape cross on top -->
+              <line x1="27" y1="4" x2="27" y2="28" stroke="rgba(255,107,44,0.5)" stroke-width="1.5"/>
+              <line x1="4" y1="16" x2="50" y2="16" stroke="rgba(255,107,44,0.5)" stroke-width="1.5"/>
+              <!-- Shine -->
+              <polygon points="27,4 38,10 27,16 16,10" fill="rgba(255,255,255,0.05)"/>
+            </svg>
+            <span class="sc3d-label">Package</span>
+          </div>
+
+          <!-- Delivery Truck -->
+          <div class="sc3d-element truck float-mid">
+            <svg width="88" height="52" viewBox="0 0 88 52" fill="none">
+              <!-- Truck body -->
+              <rect x="0" y="10" width="58" height="34" rx="3" fill="#1a3255" stroke="rgba(255,107,44,0.5)" stroke-width="1.2"/>
+              <!-- Cargo box on body -->
+              <rect x="3" y="4" width="52" height="30" rx="2" fill="#112240" stroke="rgba(255,107,44,0.3)" stroke-width="1"/>
+              <!-- Orange accent stripe -->
+              <rect x="3" y="4" width="52" height="5" rx="2" fill="rgba(255,107,44,0.35)"/>
+              <!-- Cab -->
+              <rect x="58" y="18" width="28" height="26" rx="3" fill="#1a3255" stroke="rgba(255,107,44,0.5)" stroke-width="1.2"/>
+              <!-- Windshield -->
+              <rect x="62" y="21" width="20" height="13" rx="2" fill="rgba(72,202,228,0.25)" stroke="rgba(72,202,228,0.5)" stroke-width="1"/>
+              <!-- Wheels -->
+              <circle cx="16" cy="46" r="6" fill="#0B1929" stroke="rgba(255,107,44,0.7)" stroke-width="2"/>
+              <circle cx="16" cy="46" r="2.5" fill="rgba(255,107,44,0.4)"/>
+              <circle cx="44" cy="46" r="6" fill="#0B1929" stroke="rgba(255,107,44,0.7)" stroke-width="2"/>
+              <circle cx="44" cy="46" r="2.5" fill="rgba(255,107,44,0.4)"/>
+              <circle cx="74" cy="46" r="6" fill="#0B1929" stroke="rgba(255,107,44,0.7)" stroke-width="2"/>
+              <circle cx="74" cy="46" r="2.5" fill="rgba(255,107,44,0.4)"/>
+            </svg>
+            <span class="sc3d-label">Pickup</span>
+          </div>
+
+          <!-- Warehouse building (back) -->
+          <div class="sc3d-element warehouse float-slow">
+            <svg width="90" height="70" viewBox="0 0 90 70" fill="none">
+              <!-- Front wall -->
+              <rect x="5" y="28" width="80" height="42" rx="2" fill="#1a3255" stroke="rgba(255,107,44,0.4)" stroke-width="1"/>
+              <!-- Roof -->
+              <polygon points="0,30 45,8 90,30" fill="#112240" stroke="rgba(255,107,44,0.6)" stroke-width="1"/>
+              <!-- Door -->
+              <rect x="33" y="48" width="24" height="22" rx="1" fill="rgba(255,107,44,0.15)" stroke="rgba(255,107,44,0.5)" stroke-width="1"/>
+              <!-- Windows -->
+              <rect x="12" y="36" width="14" height="10" rx="1" fill="rgba(72,202,228,0.2)" stroke="rgba(72,202,228,0.4)" stroke-width="1"/>
+              <rect x="64" y="36" width="14" height="10" rx="1" fill="rgba(72,202,228,0.2)" stroke="rgba(72,202,228,0.4)" stroke-width="1"/>
+              <!-- Shine -->
+              <line x1="5" y1="30" x2="45" y2="8" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            </svg>
+            <span class="sc3d-label">Warehouse</span>
+          </div>
+
+          <!-- Connecting lines (SVG overlay) -->
+          <svg class="sc3d-connectors" viewBox="0 0 320 200" preserveAspectRatio="none">
+            <line x1="30" y1="110" x2="90" y2="80" stroke="rgba(255,107,44,0.25)" stroke-width="1.5" stroke-dasharray="4 4"/>
+            <line x1="90" y1="80" x2="160" y2="110" stroke="rgba(255,107,44,0.25)" stroke-width="1.5" stroke-dasharray="4 4"/>
+            <line x1="160" y1="110" x2="230" y2="80" stroke="rgba(255,107,44,0.25)" stroke-width="1.5" stroke-dasharray="4 4"/>
+            <line x1="230" y1="80" x2="290" y2="110" stroke="rgba(255,107,44,0.25)" stroke-width="1.5" stroke-dasharray="4 4"/>
+          </svg>
+        </div>
+        <div class="ems-stat-cards">
+          <div class="stat-card"><span class="sc-val">99.9%</span><span class="sc-lbl">Uptime</span></div>
+          <div class="stat-card"><span class="sc-val">256-bit</span><span class="sc-lbl">Encryption</span></div>
+          <div class="stat-card"><span class="sc-val">24/7</span><span class="sc-lbl">Support</span></div>
+        </div>
+      </div>
+
+      <!-- Copy -->
+      <div class="ems-left-copy">
+        <h1>Smarter storage,<br/>built for teams.</h1>
+        <p>Manage your storage units, access logs, and team permissions all from one secure platform.</p>
+      </div>
+
+      <!-- Testimonial -->
+      <div class="ems-testimonial">
+        <p>"EasyMyStorage gave us complete visibility into our 200+ units across 3 facilities."</p>
+        <div class="ems-testi-author">
+          <div class="testi-avatar">RS</div>
+          <div><strong>Rahul Singh</strong><span>Ops Manager, StoreMax India</span></div>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- ── RIGHT PANEL: Auth Forms ── -->
+  <main class="ems-right">
+    <div class="ems-form-box">
+
+      <!-- Mobile Logo -->
+      <div class="ems-logo ems-logo-mobile">
+        <div class="ems-logo-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+        </div>
+        <span class="ems-logo-text">Easy<strong>MyStorage</strong></span>
+      </div>
+
+      <!-- Tabs -->
+      <div class="ems-tabs">
+        <button class="ems-tab active" id="tab-login" onclick="switchTab('login')">Sign In</button>
+        <button class="ems-tab" id="tab-register" onclick="switchTab('register')">Create Account</button>
+      </div>
+
+      <!-- ─ LOGIN PANEL ─ -->
+      <div id="panel-login" class="ems-panel active-panel">
+        <div class="panel-header">
+          <h2>Welcome back</h2>
+          <p>Sign in to your EasyMyStorage account</p>
+        </div>
+
+        <form id="login-form" novalidate>
+          <div class="ems-field">
+            <label for="login-email">Email Address</label>
+            <div class="field-wrap">
+              <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <input type="email" id="login-email" class="ems-input" placeholder="you@company.com" autocomplete="email" required />
+            </div>
+            <span class="field-error" id="login-email-error"></span>
+          </div>
+
+          <div class="ems-field">
+            <label for="login-password">Password</label>
+            <div class="field-wrap">
+              <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <input type="password" id="login-password" class="ems-input" placeholder="••••••••" autocomplete="current-password" required />
+              <button type="button" class="toggle-pw" onclick="togglePw('login-password')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            <span class="field-error" id="login-password-error"></span>
+          </div>
+
+          <div class="ems-row">
+            <label class="ems-check"><input type="checkbox" id="remember-me" /><span>Remember me</span></label>
+            <a href="#" class="ems-link">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="ems-btn-primary" id="login-submit">Sign In</button>
+          <div id="login-alert" class="ems-alert hidden" style="margin-top:12px;"></div>
+        </form>
+
+        <div class="ems-divider"><span>or</span></div>
+
+        <button class="ems-btn-google" id="google-btn" onclick="handleGoogleClick()">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Continue with Google
+        </button>
+
+        <p class="ems-switch-text">Don't have an account? <button type="button" onclick="switchTab('register')">Create one</button></p>
+      </div>
+
+      <!-- ─ REGISTER PANEL ─ -->
+      <div id="panel-register" class="ems-panel">
+        <div class="panel-header">
+          <h2>Create account</h2>
+          <p>Join EasyMyStorage and manage your storage</p>
+        </div>
+
+        <form id="register-form" novalidate>
+          <div class="ems-field">
+            <label for="reg-name">Full Name</label>
+            <div class="field-wrap">
+              <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" id="reg-name" class="ems-input" placeholder="Parveen Garg" autocomplete="name" required />
+            </div>
+            <span class="field-error" id="reg-name-error"></span>
+          </div>
+
+          <div class="ems-field">
+            <label for="reg-email">Email Address</label>
+            <div class="field-wrap">
+              <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <input type="email" id="reg-email" class="ems-input" placeholder="you@company.com" autocomplete="email" required />
+            </div>
+            <span class="field-error" id="reg-email-error"></span>
+          </div>
+
+          <div class="ems-field">
+            <label for="reg-password">Password</label>
+            <div class="field-wrap">
+              <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <input type="password" id="reg-password" class="ems-input" placeholder="Min. 8 characters" autocomplete="new-password" required />
+              <button type="button" class="toggle-pw" onclick="togglePw('reg-password')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            <span class="field-error" id="reg-password-error"></span>
+          </div>
+
+          <div class="ems-field">
+            <label for="reg-confirm">Confirm Password</label>
+            <div class="field-wrap">
+              <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <input type="password" id="reg-confirm" class="ems-input" placeholder="Re-enter password" autocomplete="new-password" required />
+            </div>
+            <span class="field-error" id="reg-confirm-error"></span>
+          </div>
+
+          <!-- Role Selector -->
+          <div class="ems-field">
+            <label>Account Role</label>
+            <div class="role-picker">
+              <label class="role-option" id="role-user-label">
+                <input type="radio" name="reg-role" value="user" id="role-user" checked />
+                <div class="role-card">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <span class="role-name">Standard User</span>
+                  <span class="role-desc">Access storage units &amp; view reports</span>
+                </div>
+              </label>
+              <label class="role-option" id="role-admin-label">
+                <input type="radio" name="reg-role" value="admin" id="role-admin" />
+                <div class="role-card">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <span class="role-name">Administrator</span>
+                  <span class="role-desc">Full access — only 1 allowed</span>
+                </div>
+              </label>
+            </div>
+            <span class="field-error" id="reg-role-error" style="display:none;"></span>
+          </div>
+
+          <button type="submit" class="ems-btn-primary" id="register-submit">Create Account</button>
+          <div id="register-alert" class="ems-alert hidden" style="margin-top:12px;"></div>
+        </form>
+
+        <p class="ems-switch-text">Already have an account? <button type="button" onclick="switchTab('login')">Sign in</button></p>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <p class="ems-footer">© 2025 EasyMyStorage. All rights reserved. &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a></p>
+  </main>
+
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/google-auth.js"></script>
+<script>
+// ── Tab Switcher ──────────────────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.ems-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.ems-panel').forEach(p => p.classList.remove('active-panel'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  const panel = document.getElementById('panel-' + tab);
+  panel.classList.add('active-panel');
+}
+
+// ── Show/Hide Password ────────────────────────────────────────────
+function togglePw(id) {
+  const el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+}
+
+// ── Toast ─────────────────────────────────────────────────────────
+function showToast(msg, type = 'info') {
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = 'ems-toast ' + type;
+  t.innerHTML = msg;
+  c.appendChild(t);
+  setTimeout(() => { t.classList.add('out'); t.addEventListener('animationend', () => t.remove()); }, 3500);
+}
+
+// ── Field Error ───────────────────────────────────────────────────
+function setErr(id, msg) {
+  const el = document.getElementById(id + '-error');
+  const inp = document.getElementById(id);
+  if (el) el.textContent = msg;
+  if (inp) inp.classList.toggle('invalid', !!msg);
+}
+function clearErrors() {
+  document.querySelectorAll('.field-error').forEach(e => e.textContent = '');
+  document.querySelectorAll('.ems-input').forEach(e => e.classList.remove('invalid'));
+}
+
+// ── Auth Guard ────────────────────────────────────────────────────
+function checkAuthGuard() {
+  if (sessionStorage.getItem('uf_user')) window.location.replace('dashboard.html');
+}
+checkAuthGuard();
+window.addEventListener('pageshow', e => { if (e.persisted) checkAuthGuard(); });
+
+// ── LOGIN ─────────────────────────────────────────────────────────
+document.getElementById('login-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  clearErrors();
+
+  const email    = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  let valid = true;
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setErr('login-email', 'Enter a valid email.'); valid = false; }
+  if (!password) { setErr('login-password', 'Password is required.'); valid = false; }
+  if (!valid) return;
+
+  const btn = document.getElementById('login-submit');
+  btn.textContent = 'Signing in…'; btn.disabled = true;
+
+  try {
+    const res  = await fetch('api/login.php', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({email, password}), credentials: 'include' });
+    const data = await res.json();
+
+    if (data.success) {
+      sessionStorage.setItem('uf_user', JSON.stringify({...data.user, token: data.token}));
+      showToast('✅ Welcome back! Redirecting…', 'success');
+      setTimeout(() => window.location.replace('dashboard.html'), 1000);
+    } else {
+      const alert = document.getElementById('login-alert');
+      alert.textContent = data.message;
+      alert.className = 'ems-alert error';
+    }
+  } catch {
+    showToast('❌ Network error. Please try again.', 'error');
+  } finally {
+    btn.textContent = 'Sign In'; btn.disabled = false;
+  }
+});
+
+// ── REGISTER ──────────────────────────────────────────────────────
+document.getElementById('register-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  clearErrors();
+
+  const name     = document.getElementById('reg-name').value.trim();
+  const email    = document.getElementById('reg-email').value.trim();
+  const password = document.getElementById('reg-password').value;
+  const confirm  = document.getElementById('reg-confirm').value;
+  const role     = document.querySelector('input[name="reg-role"]:checked')?.value || 'user';
+  let valid = true;
+
+  if (!name || name.length < 2)  { setErr('reg-name',    'Name must be at least 2 characters.'); valid = false; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setErr('reg-email', 'Enter a valid email.'); valid = false; }
+  if (!password || password.length < 8) { setErr('reg-password', 'Password must be at least 8 characters.'); valid = false; }
+  if (password !== confirm) { setErr('reg-confirm', 'Passwords do not match.'); valid = false; }
+  if (!valid) return;
+
+  const btn = document.getElementById('register-submit');
+  btn.textContent = 'Creating…'; btn.disabled = true;
+
+  try {
+    const res  = await fetch('api/register.php', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({name, email, password, confirm_password: confirm, role}), credentials: 'include' });
+    const data = await res.json();
+
+    if (data.success) {
+      const alertEl = document.getElementById('register-alert');
+      alertEl.textContent = '✅ Account created! Please sign in.';
+      alertEl.className = 'ems-alert success';
+      this.reset();
+      setTimeout(() => switchTab('login'), 1500);
+    } else {
+      const msg = data.message || 'Registration failed.';
+      // Route specific backend errors to the right field inline
+      if (msg.toLowerCase().includes('email')) {
+        setErr('reg-email', msg);
+        document.getElementById('reg-email').focus();
+      } else if (msg.toLowerCase().includes('admin')) {
+        setErr('reg-role-error-display', msg);
+        const alertEl = document.getElementById('register-alert');
+        alertEl.textContent = '🛡️ ' + msg;
+        alertEl.className = 'ems-alert error';
+      } else {
+        const alertEl = document.getElementById('register-alert');
+        alertEl.textContent = msg;
+        alertEl.className = 'ems-alert error';
+      }
+    }
+  } catch {
+    showToast('❌ Network error. Please try again.', 'error');
+  } finally {
+    btn.textContent = 'Create Account'; btn.disabled = false;
+  }
+});
+
+// ── Google Button ─────────────────────────────────────────────────
+function handleGoogleClick() {
+  if (typeof google === 'undefined') {
+    showToast('Google Sign-In is not available right now.', 'error');
+    return;
+  }
+  google.accounts.id.prompt();
+}
+
+// ── LIVE VALIDATION ───────────────────────────────────────────────
+const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function validateField(id, value) {
+  switch (id) {
+    case 'login-email':
+      return emailRx.test(value.trim()) ? '' : 'Enter a valid email address.';
+    case 'reg-email':
+      return emailRx.test(value.trim()) ? '' : 'Enter a valid email address.';
+    case 'login-password':
+      return value.length > 0 ? '' : 'Password is required.';
+    case 'reg-name':
+      return value.trim().length >= 2 ? '' : 'Name must be at least 2 characters.';
+    case 'reg-password':
+      return value.length >= 8 ? '' : 'Password must be at least 8 characters.';
+    case 'reg-confirm':
+      return value === document.getElementById('reg-password').value ? '' : 'Passwords do not match.';
+  }
+  return '';
+}
+
+// ── Real-time email availability check (debounced, 500ms) ─────────
+let emailCheckTimer = null;
+function checkEmailAvailability(email) {
+  clearTimeout(emailCheckTimer);
+  if (!emailRx.test(email)) return; // only check if format is valid
+  setErr('reg-email', ''); // clear existing format error
+  document.getElementById('reg-email').style.borderColor = '#e2e8f0';
+
+  emailCheckTimer = setTimeout(async () => {
+    try {
+      const res = await fetch(`api/check-email.php?email=${encodeURIComponent(email)}`);
+      const data = await res.json();
+      if (!data.available) {
+        setErr('reg-email', 'This email is already registered. Try logging in instead.');
+      } else {
+        setErr('reg-email', ''); // clear - email is available
+      }
+    } catch (_) { /* silently ignore network errors on availability check */ }
+  }, 500);
+}
+
+// ── Attach listeners to all fields ────────────────────────────────
+['login-email','login-password','reg-name','reg-email','reg-password','reg-confirm'].forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  // On blur: validate when user leaves field
+  el.addEventListener('blur', function() {
+    const msg = validateField(id, this.value);
+    setErr(id, msg);
+
+    // Real-time email check on blur for reg-email only
+    if (id === 'reg-email' && !msg) {
+      checkEmailAvailability(this.value.trim());
+    }
+  });
+
+  // On input: validate as user types
+  el.addEventListener('input', function() {
+    const msg = validateField(id, this.value);
+    setErr(id, msg);
+
+    // Real-time email check while typing for reg-email
+    if (id === 'reg-email' && !msg) {
+      checkEmailAvailability(this.value.trim());
+    }
+  });
+});
+
+// Re-validate confirm when main password changes
+document.getElementById('reg-password')?.addEventListener('input', function() {
+  const confirm = document.getElementById('reg-confirm');
+  if (confirm && confirm.value.length > 0) {
+    setErr('reg-confirm', confirm.value === this.value ? '' : 'Passwords do not match.');
+  }
+});
+
+// ── Instant Admin Role Check ──────────────────────────────────────
+// When user clicks "Administrator", immediately check if one already exists
+document.querySelectorAll('input[name="reg-role"]').forEach(radio => {
+  radio.addEventListener('change', async function() {
+    const roleErr = document.getElementById('reg-role-error');
+    if (!roleErr) return;
+
+    if (this.value === 'admin') {
+      try {
+        const res  = await fetch('api/check-admin.php');
+        const data = await res.json();
+        if (data.adminExists) {
+          // Show error inline below the role picker
+          roleErr.style.display = 'block';
+          roleErr.textContent   = '⚠️ An admin already exists. Only one administrator is allowed.';
+        } else {
+          roleErr.style.display = 'none';
+          roleErr.textContent   = '';
+        }
+      } catch (_) {
+        // silently ignore network errors
+      }
+    } else {
+      // Cleared — user selected standard role
+      roleErr.style.display = 'none';
+      roleErr.textContent   = '';
+    }
+  });
+});
+</script>
+
+</body>
+</html>
