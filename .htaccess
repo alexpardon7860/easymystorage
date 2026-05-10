@@ -1,0 +1,14 @@
+Options -Indexes
+DirectoryIndex index.html index.php
+
+# Prevent direct access to api folder
+<Files "db.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Allow all other requests
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+</IfModule>

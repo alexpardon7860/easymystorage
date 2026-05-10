@@ -6,10 +6,10 @@
  */
 
 // ── Configuration ──────────────────────────────────────────────
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'myproject');
-define('DB_USER', 'root');       // Change for production
-define('DB_PASS', '');           // Change for production
+define('DB_HOST', 'sql213.infinityfree.com');
+define('DB_NAME', 'if0_41881621_myproject');
+define('DB_USER', 'if0_41881621');
+define('DB_PASS', 'HLWAR26FKCRitKK');           // Change for production
 define('DB_CHARSET', 'utf8mb4');
 
 // ── CORS Headers (allow frontend JS to call APIs) ──────────────

@@ -3,12 +3,10 @@
 -- Engine: MySQL 5.7+ / MariaDB 10.3+
 -- ============================================================
 
--- Create & select database
-CREATE DATABASE IF NOT EXISTS `myproject`
-    CHARACTER SET utf8mb4
-    COLLATE utf8mb4_unicode_ci;
-
-USE `myproject`;
+-- NOTE: On shared hosting (InfinityFree, 000webhost, etc.)
+-- your database is pre-created in the control panel.
+-- Do NOT run CREATE DATABASE or USE statements — just import this file
+-- directly into your existing database via phpMyAdmin.
 
 -- Drop table if rebuilding from scratch (comment out in production)
 -- DROP TABLE IF EXISTS `users`;
@@ -24,6 +22,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     `role`          ENUM('admin','user') NOT NULL DEFAULT 'user',
     `auth_provider` ENUM('manual','google') NOT NULL DEFAULT 'manual',
     `google_id`     VARCHAR(100)    DEFAULT NULL COMMENT 'Google sub (unique user ID)',
+    `avatar`        VARCHAR(500)    DEFAULT NULL COMMENT 'Profile photo URL or DiceBear URL',
     `created_at`    DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at`    DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
@@ -39,30 +38,41 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- ============================================================
 -- Seed data (optional demo records — remove before production)
--- Password for all demo users: "password123"  (bcrypt hash below)
+--
+-- Default credentials for all demo accounts:
+--   Password : password
+--   Hash algo: bcrypt (PASSWORD_BCRYPT via PHP password_hash)
+--
+-- To log in use:
+--   admin@demo.com  /  password   (Administrator)
+--   john@demo.com   /  password   (Standard User)
+--   jane@demo.com   /  password   (Standard User)
 -- ============================================================
 
-INSERT IGNORE INTO `users` (`name`, `email`, `password`, `role`, `auth_provider`) VALUES
+INSERT IGNORE INTO `users` (`name`, `email`, `password`, `role`, `auth_provider`, `avatar`) VALUES
 (
     'Super Admin',
     'admin@demo.com',
     '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
     'admin',
-    'manual'
+    'manual',
+    'https://api.dicebear.com/7.x/bottts/svg?seed=SuperAdmin9001&backgroundColor=112240'
 ),
 (
     'John Doe',
     'john@demo.com',
     '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
     'user',
-    'manual'
+    'manual',
+    'https://api.dicebear.com/7.x/avataaars/svg?seed=JohnDoe4521&backgroundColor=112240'
 ),
 (
     'Jane Smith',
     'jane@demo.com',
     '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
     'user',
-    'manual'
+    'manual',
+    'https://api.dicebear.com/7.x/adventurer/svg?seed=JaneSmith7733&backgroundColor=112240'
 );
 
 -- ============================================================
@@ -70,3 +80,4 @@ INSERT IGNORE INTO `users` (`name`, `email`, `password`, `role`, `auth_provider`
 -- ============================================================
 -- SELECT * FROM users;
 -- DESCRIBE users;
+

@@ -129,22 +129,24 @@ window.addEventListener('load', () => {
     context: 'signin'
   });
 
-  // Wire up the custom Google button
+  // Render the official Google Sign-In button directly inside our styled wrapper.
+  // This is the most reliable single-click approach — no prompt() needed.
   const googleBtn = document.getElementById('google-btn');
   if (googleBtn) {
-    googleBtn.addEventListener('click', () => {
-      google.accounts.id.prompt((notification) => {
-        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-          // Fallback: render a standard Google button popup
-          google.accounts.id.renderButton(googleBtn, {
-            theme: 'filled_black',
-            size: 'large',
-            shape: 'pill',
-            width: googleBtn.offsetWidth
-          });
-          googleBtn.click();
-        }
-      });
+    // Clear any existing text/content in the button
+    googleBtn.textContent = '';
+    googleBtn.style.padding = '0';
+    googleBtn.style.overflow = 'hidden';
+    googleBtn.style.display = 'flex';
+    googleBtn.style.alignItems = 'center';
+    googleBtn.style.justifyContent = 'center';
+
+    google.accounts.id.renderButton(googleBtn, {
+      theme: 'filled_black',
+      size: 'large',
+      shape: 'pill',
+      text: 'continue_with',
+      width: Math.min(googleBtn.offsetWidth || 400, 400)
     });
   }
 });

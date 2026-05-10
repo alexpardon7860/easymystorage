@@ -484,3 +484,13 @@ document.getElementById('btn-random-avatar')?.addEventListener('click', async fu
 // ── Init ─────────────────────────────────────────────────────────
 populateNavbar();
 fetchUsers();
+
+// ── Role-based UI enforcement ─────────────────────────────────────
+// Default to 'user' if role is missing — never accidentally grant admin UI
+const userRole = currentUser?.role?.toLowerCase() || 'user';
+
+if (userRole !== 'admin') {
+  // Hide "Create new user" button — standard users cannot create accounts
+  const createBtn = document.getElementById('create-user-btn');
+  if (createBtn) createBtn.style.display = 'none';
+}
